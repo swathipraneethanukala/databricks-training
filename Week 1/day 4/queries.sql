@@ -141,3 +141,57 @@ WITH latest_orders AS (
 SELECT *
 FROM latest_orders
 WHERE rn = 1;
+-- 16. Display employee salaries along with department average salary
+SELECT 
+    employee_id,
+    employee_name,
+    department,
+    salary,
+    AVG(salary) OVER (
+        PARTITION BY department
+    ) AS dept_avg_salary
+FROM employees;
+-- 17. Find employees earning above their department average salary
+WITH emp_avg AS (
+    SELECT 
+        employee_id,
+        employee_name,
+        department,
+        salary,
+        AVG(salary) OVER (
+            PARTITION BY department
+        ) AS dept_avg
+    FROM employees
+)
+SELECT *
+FROM emp_avg
+WHERE salary > dept_avg;
+-- 18. Use SUM() OVER(PARTITION BY department) to calculate department payroll
+SELECT 
+    employee_id,
+    employee_name,
+    department,
+    salary,
+    SUM(salary) OVER (
+        PARTITION BY department
+    ) AS department_payroll
+FROM employees;
+-- 19. Find the percentage contribution of each employee salary within their department
+SELECT 
+    employee_id,
+    employee_name,
+    department,
+    salary,
+    ROUND(
+        (salary * 100.0) /
+        SUM(salary) OVER (PARTITION BY department),
+        2
+    ) AS salary_percentage
+FROM employees;
+-- 20. Use COUNT() OVER() to show total number of employees alongside each row
+SELECT 
+    employee_id,
+    employee_name,
+    department,
+    COUNT(*) OVER () AS total_employees
+FROM employees;
