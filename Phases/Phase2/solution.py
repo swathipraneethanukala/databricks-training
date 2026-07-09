@@ -1,6 +1,6 @@
-# ==========================================
+# =========================================
 # EXERCISE 1: Total order amount for each customer
-# ==========================================
+# =========================================
 print("Exercise 1 - PySpark Output:")
 ex1_pyspark = sales.groupBy("customer_id") \
     .agg(sum(col("total_amount").cast("double")).alias("total_order_amount")) \
@@ -9,9 +9,9 @@ ex1_pyspark = sales.groupBy("customer_id") \
 ex1_pyspark.show()
 
 
-# ==========================================
+# =========================================
 # EXERCISE 2: Top 3 customers by total spend
-# ==========================================
+# =========================================
 print("Exercise 2 - PySpark Output:")
 ex2_pyspark = customers.join(sales, on="customer_id", how="inner") \
     .groupBy("customer_id", "first_name", "last_name") \
